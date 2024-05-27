@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class AdminServiceImpl implements AdminService {
+public class  AdminServiceImpl implements AdminService {
 
     private final UserDao userDao;
 

@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 import ru.kata.spring.boot_security.demo.service.RoleInUserDetails;
 
 
@@ -18,54 +18,42 @@ import ru.kata.spring.boot_security.demo.service.RoleInUserDetails;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
+    private final RoleInUserDetails roleInUserDetails;
 
-    public RoleInUserDetails getRoleInUserDetails() {
-        return roleInUserDetails;
-    }
     @Autowired
-    public void setRoleInUserDetails(RoleInUserDetails roleInUserDetails) {
-        this.roleInUserDetails = roleInUserDetails;
-    }
-
-    private RoleInUserDetails roleInUserDetails;
-
-    public WebSecurityConfig(SuccessUserHandler successUserHandler) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, RoleInUserDetails roleInUserDetails) {
         this.successUserHandler = successUserHandler;
+        this.roleInUserDetails = roleInUserDetails;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                // Разрешить доступ ко всем на /new
                 .antMatchers("/new/**").permitAll()
-                // Разрешить доступ к /index и /edit пользователям с ролью USER
                 .antMatchers("/index/**", "/edit/**").hasAnyRole("USER")
-                // Разрешить доступ к /** пользователям с ролью ADMIN и SUPERADMIN
-                .antMatchers("/**").hasAnyRole("ADMIN", "SUPERADMIN")
-                // Все остальные запросы требуют аутентификации
+                .antMatchers("/**","/edit/**").hasAnyRole("ADMIN", "SUPERADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .successHandler(new SuccessUserHandler()) // Обработчик успешной аутентификации
+                .successHandler(successUserHandler)
                 .permitAll()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/index") // Перенаправление на /index после выхода
+                .logoutSuccessUrl("/index")
                 .permitAll();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // аутентификация inMemory
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setPasswordEncoder(passwordEncoder());
-        authProvider.setUserDetailsService(getRoleInUserDetails());
+        authProvider.setUserDetailsService(roleInUserDetails);
         return authProvider;
     }
 }

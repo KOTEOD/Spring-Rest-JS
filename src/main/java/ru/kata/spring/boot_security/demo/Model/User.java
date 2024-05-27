@@ -13,15 +13,15 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
     @Column
     private String username;
     @Column
     private String password;
     @Column
-    private int age;
-    @Column
-    boolean flagAccess;
+    private int age; // Изменение типа на int
+    @Column(name = "flagaccess")
+    private boolean flagAccess = true;
 
     @ManyToMany
     @JoinTable(
@@ -30,19 +30,6 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Collection<Role> roles;
-
-
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
-    }
-
-    public boolean isFlagAccess() {
-        return flagAccess;
-    }
-
-    public void setFlagAccess(boolean flagAccess) {
-        this.flagAccess = flagAccess;
-    }
 
     public User() {
     }
@@ -56,54 +43,53 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return mapAuthorities(roles);
-    }
-    public Collection<? extends GrantedAuthority> mapAuthorities(Collection<Role> roles) {
-        return roles.stream().map(r->new SimpleGrantedAuthority(r.getUsername())).collect(Collectors.toList());
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    @Override
     public String getUsername() {
         return username;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return flagAccess;
     }
 
-    public void setUsername(String name) {
-        this.username = name;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public int getAge() {
@@ -114,11 +100,12 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    @Override
-    public String toString() {
-        return "User" + '\n' +
-                "id=" + id +
-                ", name = " + username + '\'' +
-                ", age = " + age ;
+    public boolean isFlagAccess() {
+        return flagAccess;
     }
+
+    public void setFlagAccess(boolean flagAccess) {
+        this.flagAccess = flagAccess;
+    }
+
 }

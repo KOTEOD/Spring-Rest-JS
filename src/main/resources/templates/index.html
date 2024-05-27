@@ -11,7 +11,12 @@
 <p th:text=" 'NAME: ' + ${user.username}"></p>
 <p th:text="'AGE: '+ ${user.age}"></p>
 <p th:text="'PASSWORD: '+ ${user.password}"></p>
-<p th:text="'PASSWORD: '+ ${user.flagAccess}"></p>
+<p th:text="'FLAG: '+ ${user.flagAccess}"></p>
+
+<!--<div th:each="user: ${user.getAuthorities()}">-->
+<!--    <a th:href="@{'/user?id=' + ${user.id}}"-->
+<!--       th:text="'d ' + ${user.authority} + ' name: ' ">user</a>-->
+<!--</div>-->
 
 <a th:href="@{/edit(id=${user.id})}">Edit User</a>
 <hr>
