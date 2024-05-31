@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title> Users </title>
+</head>
+<body>
+<p th:text=" 'ID: ' + ${user.id}"></p>
+<p th:text=" 'NAME: ' + ${user.username}"></p>
+<p th:text="'AGE: '+ ${user.age}"></p>
+<p th:text="'PASSWORD: '+ ${user.getPassword()}"></p>
+
+<form method="GET" action="/user/deletes">
+    <input type="hidden" name="id" th:value="${user.id}">
+    <input type="submit" value="Deletes">
+</form>
+</body>
+</html>

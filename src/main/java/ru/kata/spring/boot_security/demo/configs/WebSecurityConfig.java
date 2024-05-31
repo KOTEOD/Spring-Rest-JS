@@ -18,8 +18,8 @@ import ru.kata.spring.boot_security.demo.service.RoleInUserDetails;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final SuccessUserHandler successUserHandler;
-    private final RoleInUserDetails roleInUserDetails;
+    private SuccessUserHandler successUserHandler;
+    private RoleInUserDetails roleInUserDetails;
 
     @Autowired
     public WebSecurityConfig(SuccessUserHandler successUserHandler, RoleInUserDetails roleInUserDetails) {
@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/new/**").permitAll()
-                .antMatchers("/a/user", "/new/**").hasAnyRole("USER")
+                .antMatchers("/a/user", "/new","/user/deletes").hasAnyRole("USER")
                 .antMatchers("/**","/edit/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

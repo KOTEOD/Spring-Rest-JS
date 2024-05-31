@@ -9,13 +9,13 @@ import ru.kata.spring.boot_security.demo.Model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -43,7 +43,6 @@ public class UserServiceImpl implements UserService {
     public void update(long id, User updateUser) {
         updateUser.setPassword(passwordEncoder.encode(updateUser.getPassword()));
         userRepository.save(updateUser);
-
     }
 
     @Override
