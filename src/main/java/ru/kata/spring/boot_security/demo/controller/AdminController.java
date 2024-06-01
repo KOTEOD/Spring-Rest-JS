@@ -47,19 +47,20 @@ public class AdminController {
     }
 
     @PostMapping("/new")
-    public String createNewAdmin(@ModelAttribute("user") User user) {
+    public String createNewAdmin(@ModelAttribute("user") User user,@ModelAttribute("role") Role role) {
         userService.save(user);
         return "index";
     }
 
     @GetMapping("/edit")
-    public String edit(Model model,@RequestParam("id") int id) {
+    public String edit(Model model,@RequestParam("id") int id,@ModelAttribute("role") Role role) {
         model.addAttribute("user", userService.show(id));
+        model.addAttribute("roles", roleService.findAll());
         return "edit";
     }
     @PostMapping("/update")
     public String update(@ModelAttribute("user") User user,
-                         @RequestParam("id") int id) {
+                         @RequestParam("id") int id,@ModelAttribute("role") Role role) {
         userService.update(id, user);
         return "redirect:/";
     }
