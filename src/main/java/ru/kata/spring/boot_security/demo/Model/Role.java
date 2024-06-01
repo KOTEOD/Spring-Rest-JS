@@ -15,10 +15,16 @@ public class Role implements GrantedAuthority {
     private Long id;
     @Column
     private String name;
-    @Column
-    private String authority;
 
-    @Override
+    Role(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Role() {
+
+    }
+
     public String getAuthority() {
         return name;
     }

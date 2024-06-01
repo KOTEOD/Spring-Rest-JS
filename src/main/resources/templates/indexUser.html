@@ -8,11 +8,5 @@
 <p th:text=" 'ID: ' + ${user.id}"></p>
 <p th:text=" 'NAME: ' + ${user.username}"></p>
 <p th:text="'AGE: '+ ${user.age}"></p>
-<p th:text="'PASSWORD: '+ ${user.getPassword()}"></p>
-
-<form method="GET" action="/user/deletes">
-    <input type="hidden" name="id" th:value="${user.id}">
-    <input type="submit" value="Deletes">
-</form>
 </body>
 </html>

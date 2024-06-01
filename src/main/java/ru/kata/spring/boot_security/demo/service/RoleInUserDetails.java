@@ -24,11 +24,11 @@ public class RoleInUserDetails implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user==null) {
-            throw new UsernameNotFoundException(username);
+        User user= userRepository.findByUsername(username);
+        if (user == null){
+            throw  new UsernameNotFoundException("пользователь не найден");
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getRoles());
     }
 
 }

@@ -28,10 +28,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User show(long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(() -> new NullPointerException("Значение не найдено в базе данных"));
     }
-
 
     @Override
     public void save(User saveUser) {

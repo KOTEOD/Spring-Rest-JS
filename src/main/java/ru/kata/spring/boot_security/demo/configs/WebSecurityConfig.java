@@ -8,18 +8,18 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.service.RoleInUserDetails;
 
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private SuccessUserHandler successUserHandler;
-    private RoleInUserDetails roleInUserDetails;
+    private final SuccessUserHandler successUserHandler;
+    private final RoleInUserDetails roleInUserDetails;
 
     @Autowired
     public WebSecurityConfig(SuccessUserHandler successUserHandler, RoleInUserDetails roleInUserDetails) {
@@ -31,14 +31,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(roleInUserDetails).passwordEncoder(passwordEncoder());
     }
-
+//    UserDetailsService
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/new/**").permitAll()
-                .antMatchers("/a/user", "/new","/user/deletes").hasAnyRole("USER")
-                .antMatchers("/**","/edit/**").hasRole("ADMIN")
+                .antMatchers().permitAll()
+                .antMatchers("/a/user").hasRole("USER")
+                .antMatchers("/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -46,13 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/login")
                 .permitAll();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -61,5 +56,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         authProvider.setPasswordEncoder(passwordEncoder());
         authProvider.setUserDetailsService(roleInUserDetails);
         return authProvider;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

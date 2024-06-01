@@ -1,11 +1,14 @@
 package ru.kata.spring.boot_security.demo.Model;
 
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -23,20 +26,16 @@ public class User implements UserDetails {
 
     @Column
     private int age;
-    @Column
-    private boolean flagAccess = true;
-    @ManyToMany
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Collection<Role> userRoles;
 
+    @ManyToMany
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Collection<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return userRoles;
+        return roles;
     }
 
     @Override
@@ -56,6 +55,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return flagAccess;
+        return true;
     }
 }

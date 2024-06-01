@@ -8,6 +8,7 @@ import ru.kata.spring.boot_security.demo.Model.Role;
 import ru.kata.spring.boot_security.demo.Model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,7 +20,6 @@ public class RoleServiceImpl implements RoleService {
     public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
-
 
     @Override
     public List<Role> findAll() {
