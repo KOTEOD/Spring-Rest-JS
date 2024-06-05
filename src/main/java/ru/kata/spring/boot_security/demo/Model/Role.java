@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "roles")
+@Table(name = "role")
 public class Role implements GrantedAuthority {
 
     @Id
@@ -23,5 +23,10 @@ public class Role implements GrantedAuthority {
     @Override
     public String toString(){
         return name;
+    }
+
+    public String getRoleNameWithoutPrefix() {
+        return name.substring(5);
+
     }
 }

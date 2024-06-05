@@ -25,7 +25,7 @@ public class User implements UserDetails {
     private String password;
 
     @Column
-    private int age;
+    private String email;
 
     @ManyToMany
     @JoinTable(name = "users_roles",

@@ -34,20 +34,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    UserDetailsService
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers().permitAll()
-                .antMatchers("/user/user").hasRole("USER")
-                .antMatchers("admin/**").hasRole("ADMIN")
+        http.authorizeRequests()
+                .antMatchers("/auth/login","/error").permitAll()
+                .antMatchers("/user/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
+                .formLogin().successHandler(successUserHandler)
+                .loginProcessingUrl("/process_login")
                 .successHandler(successUserHandler)
-                .permitAll()
+                .failureUrl("/auth/login?error")
                 .and()
-                .logout()
-                .logoutSuccessUrl("/login")
-                .permitAll();
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/login");
     }
 
     @Bean
