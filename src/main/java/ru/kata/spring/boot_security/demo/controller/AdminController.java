@@ -35,14 +35,13 @@ public class AdminController {
     @GetMapping()
     public String index(Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        model.addAttribute("authUser",user);
+        model.addAttribute("authUser", user);
         model.addAttribute("users", userService.getAllUser());
         model.addAttribute("roles", roleService.getAllRoles());
-        model.addAttribute("newUser",new User());
+        model.addAttribute("newUser", new User());
         return "admin";
 
     }
-
 
     @PostMapping()
     public String createNewAdmin(@ModelAttribute("user") User user) {
@@ -52,10 +51,11 @@ public class AdminController {
     }
 
     @PostMapping("/{id}")
-    public String update(@ModelAttribute("user") User user,@PathVariable("id") long id) {
+    public String update(@ModelAttribute("user") User user, @PathVariable("id") long id) {
         userService.update(id, user);
         return REDIRECT;
     }
+
     @GetMapping("/{id}")
     public String delete(@PathVariable("id") long id) {
         userService.delete(id);

@@ -31,12 +31,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(roleInUserDetails).passwordEncoder(passwordEncoder());
     }
-//    UserDetailsService
+
+    //    UserDetailsService
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/auth/login","/error").permitAll()
-                .antMatchers("/user/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/auth/login", "/error").permitAll()
+                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

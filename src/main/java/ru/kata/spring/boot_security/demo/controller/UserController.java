@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.Model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
-import java.security.Principal;
 
+import java.security.Principal;
 
 
 @Controller
@@ -19,11 +19,12 @@ public class UserController {
         this.userService = adminService;
     }
 
-    @GetMapping("/user/user")
+    @GetMapping()
     public String index(Principal principal, Model model) {
         User user = userService.findByUsername(principal.getName());
-        model.addAttribute("user", user);
-        return "indexUser";
+        model.addAttribute("authUser",user);
+        model.addAttribute("users", userService.getAllUser());
+        return "user";
     }
 
 }
