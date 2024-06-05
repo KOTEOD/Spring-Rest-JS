@@ -45,18 +45,18 @@ public class AdminController {
 
     @PostMapping()
     public String createNewAdmin(@ModelAttribute("user") User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
         userService.save(user);
         return REDIRECT;
     }
 
     @PostMapping("/{id}")
     public String update(@ModelAttribute("user") User user, @PathVariable("id") long id) {
+        user.setPassword(encoder.encode(user.getPassword()));
         userService.update(id, user);
         return REDIRECT;
     }
 
-    @GetMapping("/{id}")
+    @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") long id) {
         userService.delete(id);
         return REDIRECT;
