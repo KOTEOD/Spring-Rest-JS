@@ -25,8 +25,8 @@ INSERT INTO users (id,username, password, email) VALUES
     (0,'admin', '$2a$12$CdmGYSyo8M3iHZ.oB9k29eyO9WQguoKuysQnlQAtdbtn87B9KZFF6', 'admin@mail.ru')
     ON CONFLICT DO NOTHING;
 
-INSERT INTO users (id,username, password, age) VALUES
-    (2,'user', '$2a$12$CdmGYSyo8M3iHZ.oB9k29eyO9WQguoKuysQnlQAtdbtn87B9KZFF6', 30, TRUE)
+INSERT INTO users (id,username, password, email) VALUES
+    (1,'user', '$2a$12$CdmGYSyo8M3iHZ.oB9k29eyO9WQguoKuysQnlQAtdbtn87B9KZFF6', 30)
     ON CONFLICT DO NOTHING;
 
 INSERT INTO users_roles (user_id, role_id) VALUES
@@ -34,5 +34,5 @@ INSERT INTO users_roles (user_id, role_id) VALUES
     ON CONFLICT DO NOTHING;
 
 INSERT INTO users_roles (user_id, role_id) VALUES
-    (2, 1)
+    (1, 2)
     ON CONFLICT DO NOTHING;

@@ -23,7 +23,7 @@ public class UserController {
     public String index(Principal principal, Model model) {
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("authUser",user);
-        model.addAttribute("users", userService.getAllUser());
+        model.addAttribute("users", userService.findUserById(user.getId()));
         return "user";
     }
 

@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User show(long id) {
+    public User findUserById(long id) {
         return userRepository.findById(id).orElseThrow(() -> new NullPointerException("Значение не найдено в базе данных"));
     }
 

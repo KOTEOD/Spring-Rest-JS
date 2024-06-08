@@ -28,7 +28,7 @@ public class RoleInUserDetails implements UserDetailsService {
         if (user == null){
             throw  new UsernameNotFoundException("пользователь не найден");
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getRoles());
+        return new User(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), user.getRoles());
     }
 
 }

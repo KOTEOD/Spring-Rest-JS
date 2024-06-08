@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,13 +28,12 @@ public class AdminController {
 
     @GetMapping()
     public String index(Model model, Principal principal) {
-        User user = userService.findByUsername(principal.getName());
-        model.addAttribute("authUser", user);
+        User authUser = userService.findByUsername(principal.getName());
+        model.addAttribute("authUser", authUser);
         model.addAttribute("users", userService.getAllUser());
         model.addAttribute("roles", roleService.getAllRoles());
         model.addAttribute("newUser", new User());
         return "admin";
-
     }
 
     @PostMapping()
