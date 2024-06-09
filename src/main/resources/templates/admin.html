@@ -172,7 +172,6 @@
             </div>
             <div class="modal-body">
                 <form id="formEditUser" th:method="PATCH">
-
                     <div class="mb-3">
                         <label for="idEdit" class="col-form-label">ID</label>
                         <input type="text" name="id" class="form-control" id="idEdit" readonly />
@@ -189,11 +188,18 @@
                         <label for="passEdit" class="col-form-label">Password</label>
                         <input type="password" name="password" class="form-control" id="passEdit" />
                     </div>
-                    <label class="container-fluid col-6" for="rolesEditUser"><strong>Role</strong>
-                        <select class="form-control" id="rolesEditUser" name="roles" multiple size="2">
-
-                        </select>
-                    </label>
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="rolesEditUser">Role</label>
+                            <select class="custom-select form-control" id="rolesEditUser"
+                                    name="roles"
+                                    multiple
+                                    size="2">
+                                <option th:each="role : ${roles}"
+                                        th:value="${role.id}"
+                                        th:text="${role.getRoleNameWithoutPrefix()}"
+                                        th:field="*{roles}"></option>
+                            </select>
+                        </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="editFormCloseButton" data-dismiss="modal" aria-label="Close">Close</button>
                         <button type="submit" class="btn btn-primary">Edit</button>

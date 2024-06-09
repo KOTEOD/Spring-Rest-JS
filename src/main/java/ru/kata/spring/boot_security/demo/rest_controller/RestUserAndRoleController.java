@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.rest_controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.Model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -14,10 +15,12 @@ import java.util.List;
 public class RestUserAndRoleController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public RestUserAndRoleController(UserService userService) {
+    public RestUserAndRoleController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -39,13 +42,14 @@ public class RestUserAndRoleController {
 
     @PutMapping("/{id}")
     public ResponseEntity<User> update(@PathVariable("id") long id, @RequestBody User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.update(id, user);
         return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteUserById(@PathVariable("id") long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.delete(id);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 }
